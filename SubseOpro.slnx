@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SubseOpro.Api/SubseOpro.Api.csproj" />
+    <Project Path="src/SubseOpro.Application/SubseOpro.Application.csproj" />
+    <Project Path="src/SubseOpro.Domain/SubseOpro.Domain.csproj" />
+    <Project Path="src/SubseOpro.Infrastructure/SubseOpro.Infrastructure.csproj" />
+  </Folder>
+</Solution>

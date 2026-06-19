@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: subseopro-postgres-prod
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-subseopro}
+      POSTGRES_USER: ${POSTGRES_USER:-subseopro}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-subseopro} -d ${POSTGRES_DB:-subseopro}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - omnora_internal
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    image: subseopro-api:prod
+    container_name: subseopro-api-prod
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=${POSTGRES_DB:-subseopro};Username=${POSTGRES_USER:-subseopro};Password=${POSTGRES_PASSWORD}
+      Seed__RunOnStartup: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/api/v1/health > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - omnora_internal
+
+volumes:
+  postgres_data:
+
+networks:
+  omnora_internal:
+    external: true

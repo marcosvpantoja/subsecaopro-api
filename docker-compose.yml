@@ -1,0 +1,27 @@
+services:
+  postgres:
+    extends:
+      file: docker-compose.postgres.yml
+      service: postgres
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: subseopro-api
+    ports:
+      - "5001:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=subseopro;Username=subseopro;Password=subseopro_dev
+      Jwt__Secret: dev-secret-change-in-production-min-32-chars!!
+      Jwt__Issuer: SubseOpro
+      Jwt__Audience: SubseOproApp
+      Auth__BcryptWorkFactor: "12"
+      Seed__RunOnStartup: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

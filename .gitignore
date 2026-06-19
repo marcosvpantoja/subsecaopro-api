@@ -1,0 +1,55 @@
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.userosscache
+*.userprefs
+*.suo
+*.sln.docstates
+*.ncrunchproject
+*.ncrunch*
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Publish
+[Pp]ublish/
+PublishOutput/
+
+# ASP.NET
+wwwroot/lib/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.prod.example
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+*.sw?
+
+# Docker overrides locais
+docker-compose.override.yml
